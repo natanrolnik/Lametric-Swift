@@ -2,7 +2,7 @@
 ![Lametric-Swift](.github/media/Hero-Light.png#gh-light-mode-only)
 
 <p align="center">
-  A Swift package for interacting with LaMetric Time devices, providing both a client library and command-line interface
+  A Swift package for interacting with LaMetric Time and Sky devices, providing both a client library and command-line interface
   <hr>
 </p>
 
