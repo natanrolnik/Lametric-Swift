@@ -7,12 +7,12 @@ import NIOCore
 
 public struct LametricClient: Sendable {
     private let authHeader: String
-    private let mode: Mode
     private let verbose: Bool
+    private let baseURLString: String
 
     public init(
         apiKey: String,
-        mode: Mode,
+        connection: Connection,
         verbose: Bool = false
     ) throws(Error) {
         guard !apiKey.isEmpty,
@@ -20,8 +20,13 @@ public struct LametricClient: Sendable {
             throw .invalidApiKey
         }
         self.authHeader = authHeaderData.base64EncodedString()
-        self.mode = mode
         self.verbose = verbose
+
+        let scheme = connection.scheme
+        let host = connection.host
+        let port = connection.portString
+        baseURLString = "\(scheme)://\(host)\(port)/api/v2/"
+
     }
 
     // MARK: - Namespaced API Access
@@ -73,7 +78,7 @@ public struct LametricClient: Sendable {
     }
 
     private func makeRequest(for endpoint: Endpoint) throws -> HTTPClientRequest {
-        var url = "\(mode.scheme)://\(mode.domain)/api/v2/"
+        var url = baseURLString
 
         if let prefix = endpoint.prefix, !prefix.isEmpty {
             url.append(prefix + "/")
@@ -116,27 +121,36 @@ public struct LametricClient: Sendable {
 }
 
 public extension LametricClient {
-    enum Mode: Sendable {
-        case local(name: String, port: Int = 8080)
-        case remote(domain: String)
+    struct Connection: Sendable {
+        let scheme: Scheme
+        let host: String
+        let port: Int?
+
+        public static func local(
+            name: String,
+            port: Int = 8080
+        ) -> Self {
+            .init(scheme: .http, host: name, port: port)
+        }
+
+        public static func url(
+            scheme: Scheme = .https,
+            host: String,
+            port: Int? = nil
+        ) -> Self {
+            .init(scheme: scheme, host: host, port: port)
+        }
+    }
+
+    enum Scheme: String, Sendable, CaseIterable {
+        case http
+        case https
     }
 }
 
-extension LametricClient.Mode {
-    var domain: String {
-        switch self {
-        case let .local(name, port):
-            "\(name).local:\(port)"
-        case let .remote(domain):
-            domain
-        }
-    }
-
-    var scheme: String {
-        switch self {
-        case .local: "http"
-        case .remote: "https"
-        }
+private extension LametricClient.Connection {
+    var portString: String {
+        port.map { ":\($0)" } ?? ""
     }
 }
 
