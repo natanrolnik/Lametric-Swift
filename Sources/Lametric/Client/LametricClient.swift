@@ -5,7 +5,7 @@ import HTTPTypes
 import LametricFoundation
 import NIOCore
 
-public struct LametricClient {
+public struct LametricClient: Sendable {
     private let authHeader: String
     private let mode: Mode
     private let verbose: Bool
@@ -116,7 +116,7 @@ public struct LametricClient {
 }
 
 public extension LametricClient {
-    enum Mode {
+    enum Mode: Sendable {
         case local(name: String, port: Int = 8080)
         case remote(domain: String)
     }
