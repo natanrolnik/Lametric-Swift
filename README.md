@@ -91,13 +91,13 @@ import LametricFoundation
 // For a local device (recommended for Raspberry Pi, local servers)
 let client = try LametricClient(
     apiKey: "your-device-api-key",
-    mode: .local(name: "your-device-name")  // e.g., "sky3845" or "time1234"
+    connection: .local(name: "your-device-name")  // e.g., "sky3845" or "time1234"
 )
 
 // For a device being exposed to the internet via a proxy
 let client = try LametricClient(
     apiKey: "your-device-api-key", 
-    mode: .remote(domain: "your-domain.com")
+    connection: .url(host: "your-domain.com")
 )
 ```
 
@@ -171,7 +171,7 @@ class SystemMonitor {
     init() throws {
         self.client = try LametricClient(
             apiKey: ProcessInfo.processInfo.environment["LAMETRIC_API_KEY"] ?? "",
-            mode: .local(name: "time1234")
+            connection: .local(name: "time1234")
         )
     }
 
@@ -192,13 +192,13 @@ class SystemMonitor {
 
 ### CLI Usage
 
-The CLI supports environment variables for convenient configuration. If you don't configure these, you'll need to pass the api key and the device name (or remote host) as options **in every command**.
+The CLI supports environment variables for convenient configuration. If you don't configure these, you'll need to pass the api key and the device name (or an explicit host) as options **in every command**.
 
 ```bash
 export LAMETRIC_API_KEY="your-api-key"
 export LAMETRIC_DEVICE_NAME="your-device-name"  # For local devices
 # OR
-export LAMETRIC_REMOTE_HOST="your-domain.com"   # For remote devices
+export LAMETRIC_HOST="your-domain.com"   # For remote devices or devices in the same network with a known host
 ```
 
 #### Basic Commands
@@ -242,8 +242,8 @@ lametric apps activate com.lametric.clock 1234567890
 # Local device (Raspberry Pi, same network)
 lametric --local-device-name "lametric-12ab34" notifications send --text "Local message"
 
-# Remote device (cloud server, exposing your local device to the internet via some proxy)
-lametric --remote-host "my-lametric.example.com" notifications send --text "Remote message"
+# Remote device (cloud server, exposing your local device to the internet via some proxy) or device in the same network with a known host
+lametric --host "my-lametric.example.com" notifications send --text "Remote message"
 ```
 
 ## Configuration
@@ -254,7 +254,7 @@ lametric --remote-host "my-lametric.example.com" notifications send --text "Remo
 |----------|-------------|---------|
 | `LAMETRIC_API_KEY` | Device API key | `abc123def456` |
 | `LAMETRIC_DEVICE_NAME` | Local device name | `sky3298` |
-| `LAMETRIC_REMOTE_HOST` | Remote host domain | `my-device.example.com` |
+| `LAMETRIC_HOST` | Host domain or IP address | `my-device.example.com` or `192.168.1.100` |
 
 ### Getting Your API Key
 
