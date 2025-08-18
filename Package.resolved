@@ -1,5 +1,5 @@
 {
-  "originHash" : "03bac5a9668e3462a03b5afa7ffa3b6cef8e7ae5dfc5e06912eefc4e0f445302",
+  "originHash" : "997c35258edf6511428f756edfc9fd4dbaa6141eb1b63a47c6b526e818be926f",
   "pins" : [
     {
       "identity" : "async-http-client",
@@ -141,8 +141,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SwiftToolkit/swift-pretty-print",
       "state" : {
-        "branch" : "main",
-        "revision" : "ff267331b0df54f3034ad42c00a29ee00ad9c21c"
+        "revision" : "ff267331b0df54f3034ad42c00a29ee00ad9c21c",
+        "version" : "0.1.1"
       }
     },
     {

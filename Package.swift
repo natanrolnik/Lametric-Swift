@@ -17,7 +17,7 @@ let package = Package(
         .package(url: "https://github.com/swift-server/async-http-client.git", from: "1.26.0"),
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.5.0"),
         .package(url: "https://github.com/apple/swift-http-types.git", from: "1.0.0"),
-        .package(url: "https://github.com/SwiftToolkit/swift-pretty-print", branch: "main"),
+        .package(url: "https://github.com/SwiftToolkit/swift-pretty-print", from: "0.1.1"),
         .package(url: "https://github.com/mtynior/ColorizeSwift.git", from: "1.7.0")
     ],
     targets: [
