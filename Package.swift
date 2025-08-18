@@ -27,6 +27,7 @@ let package = Package(
             dependencies: [
                 .product(name: "AsyncHTTPClient", package: "async-http-client"),
                 .product(name: "HTTPTypes", package: "swift-http-types"),
+                .product(name: "ColorizeSwift", package: "colorizeswift"),
                 .target(name: "LametricFoundation")
             ]
         ),
