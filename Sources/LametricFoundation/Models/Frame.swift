@@ -109,17 +109,3 @@ extension Frame {
         }
     }
 }
-
-// MARK: - Enums
-
-public enum Priority: String, Codable, Sendable, CaseIterable {
-    case info
-    case warning
-    case critical
-}
-
-public enum IconType: String, Codable, Sendable, CaseIterable {
-    case none
-    case info
-    case alert
-}

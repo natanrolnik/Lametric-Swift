@@ -40,7 +40,7 @@ extension NotificationsCommand {
         var priority: Priority = .info
 
         @Option(help: "The system icon to be displayed before the notification.")
-        var iconType: IconType = .none
+        var iconType: IconType = nil
 
         @Option(help: "Number of times to show the notification")
         var cycles: Int = 1

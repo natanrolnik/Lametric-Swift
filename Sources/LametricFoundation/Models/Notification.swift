@@ -16,7 +16,7 @@ public struct Notification: Codable, Sendable {
     public init(
         model: Model,
         priority: Priority? = nil,
-        iconType: IconType = .none,
+        iconType: IconType = nil,
         lifetime: Int? = nil
     ) {
         self.model = model
@@ -31,7 +31,7 @@ public struct Notification: Codable, Sendable {
         sound: Sound? = nil,
         cycles: Int? = nil,
         priority: Priority? = nil,
-        iconType: IconType = .none,
+        iconType: IconType = nil,
         lifetime: Int? = nil
     ) {
         self.model = Model(
@@ -42,5 +42,25 @@ public struct Notification: Codable, Sendable {
         self.priority = priority
         self.iconType = iconType
         self.lifetime = lifetime
+    }
+}
+
+// MARK: - Enums
+
+public enum Priority: String, Codable, Sendable, CaseIterable {
+    case info
+    case warning
+    case critical
+}
+
+public enum IconType: String, Codable, Sendable, CaseIterable {
+    case none
+    case info
+    case alert
+}
+
+extension IconType: ExpressibleByNilLiteral {
+    public init(nilLiteral: ()) {
+        self = .none
     }
 }
