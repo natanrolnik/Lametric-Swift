@@ -3,10 +3,12 @@
 
 <p align="center">
   A Swift package for interacting with LaMetric Time and Sky devices, providing both a client library and command-line interface
-  
-  [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fnatanrolnik%2FLametric-Swift%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/natanrolnik/Lametric-Swift)
-  [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fnatanrolnik%2FLametric-Swift%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/natanrolnik/Lametric-Swift)
+  <hr>
 </p>
+  
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fnatanrolnik%2FLametric-Swift%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/natanrolnik/Lametric-Swift)
+
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fnatanrolnik%2FLametric-Swift%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/natanrolnik/Lametric-Swift)
 
 > [!NOTE]
 > This package is **not affiliated with LaMetric**, but rather a personal project that can help others to interact with their LaMetric devices, from the command line on macOS or Linux, and from Swift code.

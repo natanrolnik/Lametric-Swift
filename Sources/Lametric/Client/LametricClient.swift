@@ -85,7 +85,7 @@ public extension LametricClient {
             name: String,
             port: Int = 8080
         ) -> Self {
-            .init(scheme: .http, host: name, port: port)
+            .init(scheme: .http, host: name + ".local", port: port)
         }
 
         public static func url(
