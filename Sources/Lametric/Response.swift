@@ -1,22 +1,21 @@
 import Foundation
 import LametricFoundation
-import NIO
-
-#if os(Linux)
-import NIOFoundationCompat
-#endif
 
 public struct Response<T: Decodable> {
     public let decoded: T?
-    private let byteBuffer: ByteBuffer?
+    private let data: Data?
     private let statusCode: UInt
 
-    init(_ byteBuffer: ByteBuffer?, statusCode: UInt) throws {
-        decoded = byteBuffer.flatMap {
+    init(_ data: Data?, statusCode: UInt) throws {
+        decoded = data.flatMap {
             try? lametricJSONDecoder.decode(T.self, from: $0)
         }
-        self.byteBuffer = byteBuffer
+        self.data = data
         self.statusCode = statusCode
+    }
+
+    init(_ data: Data?, statusCode: Int) throws {
+        try self.init(data, statusCode: UInt(statusCode))
     }
 
     public var isValid: Bool {
@@ -29,16 +28,16 @@ public struct Response<T: Decodable> {
                 throw Error.invalidStatusCode(statusCode)
             }
 
-            guard let byteBuffer, byteBuffer.readableBytes > 0 else {
+            guard let data, !data.isEmpty else {
                 throw Error.emptyResponse
             }
 
             guard let decoded else {
                 do {
-                    return try lametricJSONDecoder.decode(T.self, from: byteBuffer)
+                    return try lametricJSONDecoder.decode(T.self, from: data)
                 } catch {
                     throw Error.decodingFailure(
-                        (try? prettyPrinted) ?? String(buffer: byteBuffer),
+                        (try? prettyPrinted) ?? String(data: data, encoding: .utf8) ?? "[Invalid UTF-8]",
                         error
                     )
                 }
@@ -50,12 +49,12 @@ public struct Response<T: Decodable> {
 
     public var prettyPrinted: String {
         get throws {
-            guard let byteBuffer, byteBuffer.readableBytes > 0 else {
+            guard let data, !data.isEmpty else {
                 return "[Empty Response]"
             }
 
             do {
-                let object = try JSONSerialization.jsonObject(with: byteBuffer)
+                let object = try JSONSerialization.jsonObject(with: data)
                 let prettyData = try JSONSerialization.data(
                     withJSONObject: object,
                     options: .prettyPrinted
@@ -67,7 +66,7 @@ public struct Response<T: Decodable> {
 
                 return string
             } catch {
-                let plainString = String(buffer: byteBuffer)
+                let plainString = String(data: data, encoding: .utf8) ?? "[Invalid UTF-8]"
                 guard !plainString.isEmpty else {
                     return "Empty Response"
                 }

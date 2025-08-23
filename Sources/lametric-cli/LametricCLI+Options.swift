@@ -37,10 +37,10 @@ extension LametricCLI {
             help: """
             The port component of the URL to connect to.
             When using a local name, defaults to 8080.
-            When using an explicit host, defaults to nil. 
+            When using an explicit host, defaults to nil.
             """
         )
-        var port: Int? = nil
+        var port: Int?
 
         @Option(
             help: """
@@ -91,7 +91,7 @@ extension LametricCLI {
                 Please specify either one of the following options:
                   - a local device name using the --local-device-name (-n) option
                   - a host using the --host (-h) option
-                
+
                 You can also set one of the following environment variables:
                   - `LAMETRIC_DEVICE_NAME`
                   - `LAMETRIC_HOST`

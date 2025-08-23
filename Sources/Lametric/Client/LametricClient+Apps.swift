@@ -1,11 +1,10 @@
-import AsyncHTTPClient
 import LametricFoundation
 
 public extension LametricClient {
     struct Apps {
-        private let executor: RequestExecutor
+        private let executor: HTTPExecutor
 
-        internal init(executor: RequestExecutor) {
+        internal init(executor: HTTPExecutor) {
             self.executor = executor
         }
 

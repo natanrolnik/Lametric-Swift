@@ -15,13 +15,13 @@ extension Endpoints.Device: Endpoint {
         case .state: ""
         }
     }
-    
+
     var method: HTTPRequest.Method {
         switch self {
         case .state: .get
         }
     }
-    
+
     var body: (any Encodable)? {
         switch self {
         case .state: nil

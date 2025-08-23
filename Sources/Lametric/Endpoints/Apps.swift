@@ -15,7 +15,7 @@ extension Endpoints {
 
 extension Endpoints.Apps: Endpoint {
     var prefix: String? { "device" }
-    
+
     var path: String {
         switch self {
         case .getAll:
@@ -32,7 +32,7 @@ extension Endpoints.Apps: Endpoint {
             "apps/\(package)/widgets/\(widgetId)/activate"
         }
     }
-    
+
     var method: HTTPRequest.Method {
         switch self {
         case .getAll,
@@ -46,7 +46,7 @@ extension Endpoints.Apps: Endpoint {
             .post
         }
     }
-    
+
     var body: (any Encodable)? {
         if case let .sendAction(_, _, action) = self {
             return action

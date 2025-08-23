@@ -13,4 +13,3 @@ extension Endpoints.List: Endpoint {
     var method: HTTPRequest.Method { .get }
     var body: (any Encodable)? { nil }
 }
-

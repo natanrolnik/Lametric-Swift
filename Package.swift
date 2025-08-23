@@ -6,12 +6,13 @@ import PackageDescription
 let package = Package(
     name: "lametric-swift",
     platforms: [
-        .macOS(.v13)
+        .macOS(.v13),
+        .iOS(.v16)
     ],
     products: [
         .executable(name: "lametric", targets: ["lametric-cli"]),
         .library(name: "Lametric", targets: ["Lametric"]),
-        .library(name: "LametricFoundation", targets: ["LametricFoundation"]),
+        .library(name: "LametricFoundation", targets: ["LametricFoundation"])
     ],
     dependencies: [
         .package(url: "https://github.com/swift-server/async-http-client.git", from: "1.26.0"),
@@ -25,7 +26,7 @@ let package = Package(
         .target(
             name: "Lametric",
             dependencies: [
-                .product(name: "AsyncHTTPClient", package: "async-http-client"),
+                .product(name: "AsyncHTTPClient", package: "async-http-client", condition: .when(platforms: [.linux])),
                 .product(name: "HTTPTypes", package: "swift-http-types"),
                 .product(name: "ColorizeSwift", package: "colorizeswift"),
                 .target(name: "LametricFoundation")

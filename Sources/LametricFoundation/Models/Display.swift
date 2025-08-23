@@ -76,13 +76,13 @@ public struct DisplayStateUpdate: Codable, Sendable {
 public struct ScreensaverUpdate: Codable, Sendable {
     /// Enable or disable screensaver
     public let enabled: Bool?
-    
+
     /// Screensaver mode
     public let mode: ScreensaverMode?
-    
+
     /// Mode-specific parameters
     public let modeParams: ScreensaverModeParams?
-    
+
     public init(
         enabled: Bool? = nil,
         mode: ScreensaverMode? = nil,
@@ -92,7 +92,7 @@ public struct ScreensaverUpdate: Codable, Sendable {
         self.mode = mode
         self.modeParams = modeParams
     }
-    
+
     /// Create screensaver update for when-dark mode
     public static func whenDark(enabled: Bool) -> ScreensaverUpdate {
         .init(
@@ -101,7 +101,7 @@ public struct ScreensaverUpdate: Codable, Sendable {
             modeParams: ScreensaverModeParams(enabled: enabled)
         )
     }
-    
+
     /// Create screensaver update for time-based mode
     public static func timeBased(
         enabled: Bool,

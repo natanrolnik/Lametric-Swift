@@ -1,14 +1,17 @@
+#if os(Linux)
 import AsyncHTTPClient
+import NIOCore
+#endif
 import ColorizeSwift
 import Foundation
 import HTTPTypes
 import LametricFoundation
-import NIOCore
 
 public struct LametricClient: Sendable {
     private let authHeader: String
     private let verbose: Bool
     private let baseURLString: String
+    private let httpExecutor: HTTPExecutor
 
     public init(
         apiKey: String,
@@ -27,96 +30,48 @@ public struct LametricClient: Sendable {
         let port = connection.portString
         baseURLString = "\(scheme)://\(host)\(port)/api/v2/"
 
+        #if os(Linux)
+        self.httpExecutor = AsyncHTTPClientExecutor(
+            authHeader: authHeader,
+            baseURLString: baseURLString,
+            verbose: verbose
+        )
+        #else
+        self.httpExecutor = URLSessionExecutor(
+            authHeader: authHeader,
+            baseURLString: baseURLString,
+            verbose: verbose
+        )
+        #endif
     }
 
     // MARK: - Namespaced API Access
-    
+
     /// Device-related operations
     public var device: Device {
-        Device(executor: self)
+        Device(executor: httpExecutor)
     }
-    
+
     /// Notification-related operations  
     public var notifications: Notifications {
-        Notifications(executor: self)
+        Notifications(executor: httpExecutor)
     }
-    
+
     /// Display-related operations
     public var display: Display {
-        Display(executor: self)
+        Display(executor: httpExecutor)
     }
-    
+
     /// App-related operations
     public var apps: Apps {
-        Apps(executor: self)
-    }
-
-    internal func executeRequest<T: Decodable>(for endpoint: Endpoint) async throws -> Response<T> {
-        let request = try makeRequest(for: endpoint)
-
-        if verbose {
-            let method = endpoint.method.rawValue.uppercased()
-
-            if let body = endpoint.body,
-               let bodyData = try? lametricJSONEncoder.encode(body),
-               let bodyString = String(data: bodyData, encoding: .utf8) {
-                print("\(method.bold()) \(request.url)")
-                print(bodyString, terminator: "\n\n")
-            } else {
-                print("\(method.bold()) \(request.url)", terminator: "\n\n")
-            }
-        }
-
-        return try await execute(request)
+        Apps(executor: httpExecutor)
     }
 
     // MARK: - General API Methods
 
     /// Lists all available API endpoints
     public func listEndpoints() async throws -> Response<ListEndpointsResponse> {
-        try await executeRequest(for: Endpoints.list)
-    }
-
-    private func makeRequest(for endpoint: Endpoint) throws -> HTTPClientRequest {
-        var url = baseURLString
-
-        if let prefix = endpoint.prefix, !prefix.isEmpty {
-            url.append(prefix + "/")
-        }
-
-        url.append(endpoint.path)
-
-        var request = HTTPClientRequest(url: url)
-        request.method = .init(rawValue: endpoint.method.rawValue)
-
-        if let body = endpoint.body {
-            let encoded = try lametricJSONEncoder.encode(body)
-            request.body = .bytes(encoded)
-        }
-
-        let headers: [HTTPField.Name: String] = [
-            .contentType: "application/json",
-            .authorization: "Basic \(authHeader)"
-        ]
-
-        request.headers = .init(headers.map {
-            ($0.key.canonicalName, $0.value)
-        })
-
-        return request
-    }
-
-    private func execute<T: Decodable>(_ request: HTTPClientRequest) async throws -> Response<T> {
-        let response = try await HTTPClient.shared.execute(request, timeout: .seconds(5))
-
-        do {
-            let body = try await response.body.collect(upTo: .max)
-            return try Response(body, statusCode: response.status.code)
-        } catch let error as HTTPClientError where error == .deadlineExceeded {
-            throw Error.timeout
-        } catch {
-            throw error
-        }
+        try await httpExecutor.executeRequest(for: Endpoints.list)
     }
 }
 
@@ -153,11 +108,3 @@ private extension LametricClient.Connection {
         port.map { ":\($0)" } ?? ""
     }
 }
-
-// MARK: - Execution Protocol
-
-internal protocol RequestExecutor {
-    func executeRequest<T: Decodable>(for endpoint: Endpoint) async throws -> Response<T>
-}
-
-extension LametricClient: RequestExecutor {}

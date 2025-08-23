@@ -1,14 +1,13 @@
-import AsyncHTTPClient
 import LametricFoundation
 
 public extension LametricClient {
     struct Display {
-        private let executor: RequestExecutor
-        
-        internal init(executor: RequestExecutor) {
+        private let executor: HTTPExecutor
+
+        internal init(executor: HTTPExecutor) {
             self.executor = executor
         }
-        
+
         /// Gets the current display state
         public func getState() async throws -> Response<LametricFoundation.Display> {
             try await executor.executeRequest(for: Endpoints.DisplayState.get)

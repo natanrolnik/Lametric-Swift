@@ -169,4 +169,3 @@ public enum StopwatchAction {
     case pause
     case reset
 }
-

@@ -1,14 +1,13 @@
-import AsyncHTTPClient
 import LametricFoundation
 
 public extension LametricClient {
     struct Notifications {
-        private let executor: RequestExecutor
-        
-        internal init(executor: RequestExecutor) {
+        private let executor: HTTPExecutor
+
+        internal init(executor: HTTPExecutor) {
             self.executor = executor
         }
-        
+
         /// Sends a notification to the device
         @discardableResult
         public func send(_ notification: LametricFoundation.Notification) async throws -> Response<NotificationSuccessResponse> {

@@ -32,16 +32,16 @@ extension AppsCommand {
                 abstract: "List all installed apps"
             )
         }
-        
+
         @OptionGroup
         var options: LametricCLI.Options
-        
+
         func run() async throws {
             let client = try options.makeClient()
             let response = try await client.apps.getAll()
 
             let apps = try response.required
-            
+
             if options.verbose {
                 print("Installed Apps:".bold())
                 prettyPrint(apps, includeTypeName: false)
@@ -64,7 +64,7 @@ extension AppsCommand {
             }
         }
     }
-    
+
     struct GetCommand: AsyncParsableCommand {
         static var configuration: CommandConfiguration {
             CommandConfiguration(
@@ -72,19 +72,19 @@ extension AppsCommand {
                 abstract: "Get details about a specific app"
             )
         }
-        
+
         @OptionGroup
         var options: LametricCLI.Options
-        
+
         @Argument(help: "App package name (e.g., com.lametric.clock)")
         var package: String
-        
+
         func run() async throws {
             let client = try options.makeClient()
             let response = try await client.apps.getApp(package: package)
-            
+
             let app = try response.required
-            
+
             if options.verbose {
                 print("\(package) details:".bold())
                 prettyPrint(app, includeTypeName: false)
@@ -111,7 +111,7 @@ extension AppsCommand {
             }
         }
     }
-    
+
     struct NextCommand: AsyncParsableCommand {
         static var configuration: CommandConfiguration {
             CommandConfiguration(
@@ -119,10 +119,10 @@ extension AppsCommand {
                 abstract: "Switch to next app"
             )
         }
-        
+
         @OptionGroup
         var options: LametricCLI.Options
-        
+
         func run() async throws {
             let client = try options.makeClient()
             let response = try await client.apps.switchToNext()
@@ -136,7 +136,7 @@ extension AppsCommand {
             print("Switched to next app".foregroundColor(.green))
         }
     }
-    
+
     struct PreviousCommand: AsyncParsableCommand {
         static var configuration: CommandConfiguration {
             CommandConfiguration(
@@ -144,14 +144,14 @@ extension AppsCommand {
                 abstract: "Switch to previous app"
             )
         }
-        
+
         @OptionGroup
         var options: LametricCLI.Options
-        
+
         func run() async throws {
             let client = try options.makeClient()
             let response = try await client.apps.switchToPrevious()
-            
+
             if options.verbose {
                 print("Switch to previous response:".bold())
                 prettyPrint(try response.required, includeTypeName: false)
@@ -161,7 +161,7 @@ extension AppsCommand {
             print("Switched to previous app".foregroundColor(.green))
         }
     }
-    
+
     struct ActivateCommand: AsyncParsableCommand {
         static var configuration: CommandConfiguration {
             CommandConfiguration(
@@ -169,23 +169,23 @@ extension AppsCommand {
                 abstract: "Activate a specific widget"
             )
         }
-        
+
         @OptionGroup
         var options: LametricCLI.Options
-        
+
         @Argument(help: "App package name")
         var package: String
-        
+
         @Argument(help: "Widget ID")
         var widgetId: String
-        
+
         func run() async throws {
             let client = try options.makeClient()
             let response = try await client.apps.activateWidget(
                 package: package,
                 widgetId: widgetId
             )
-            
+
             if options.verbose {
                 print("Activate \(widgetId) (\(package)):".bold())
                 prettyPrint(try response.required, includeTypeName: false)
@@ -195,7 +195,7 @@ extension AppsCommand {
             print("Activated widget \(widgetId) in \(package)".foregroundColor(.green))
         }
     }
-    
+
     struct ActionCommand: AsyncParsableCommand {
         static var configuration: CommandConfiguration {
             CommandConfiguration(
@@ -203,36 +203,36 @@ extension AppsCommand {
                 abstract: "Send custom action to a widget"
             )
         }
-        
+
         @OptionGroup
         var options: LametricCLI.Options
-        
+
         @Argument(help: "App package name")
         var package: String
-        
+
         @Argument(help: "Widget ID")
         var widgetId: String
-        
+
         @Argument(help: "Action ID")
         var actionId: String
-        
+
         @Option(help: "JSON parameters for the action")
         var params: String?
-        
+
         @Flag(help: "Activate widget when sending action")
         var activate: Bool = false
-        
+
         func run() async throws {
             let client = try options.makeClient()
-            
-            var actionParams: [String: AnyCodable]? = nil
-            
+
+            var actionParams: [String: AnyCodable]?
+
             if let params = params {
                 guard let data = params.data(using: .utf8),
                       let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
                     throw ValidationError("Invalid JSON parameters")
                 }
-                
+
                 actionParams = [:]
                 for (key, value) in json {
                     if let stringValue = value as? String {
@@ -246,19 +246,19 @@ extension AppsCommand {
                     }
                 }
             }
-            
+
             let action = AppAction(
                 id: actionId,
                 params: actionParams,
                 activate: activate ? true : nil
             )
-            
+
             let response = try await client.apps.sendAction(
                 package: package,
                 widgetId: widgetId,
                 action: action
             )
-            
+
             if options.verbose {
                 print("Action \(action) sent to \(package):".bold())
                 prettyPrint(try response.required, includeTypeName: false)
