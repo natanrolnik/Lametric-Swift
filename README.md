@@ -3,7 +3,9 @@
 
 <p align="center">
   A Swift package for interacting with LaMetric Time and Sky devices, providing both a client library and command-line interface
-  <hr>
+  
+  [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fnatanrolnik%2FLametric-Swift%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/natanrolnik/Lametric-Swift)
+  [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fnatanrolnik%2FLametric-Swift%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/natanrolnik/Lametric-Swift)
 </p>
 
 > [!NOTE]
@@ -277,7 +279,7 @@ LaMetric supports thousands of built-in icons. Use icon IDs like:
 - `i2867` - Heart
 - `a7956` - Animated loading
 
-Browse icons at: [LaMetric Icon Gallery](https://developer.lametric.com/icons)
+Browse icons and animations at: [LaMetric Icon Gallery](https://developer.lametric.com/icons)
 
 ## Requirements
 
