@@ -17,11 +17,12 @@ public struct LametricClient: Sendable {
         apiKey: String,
         connection: Connection,
         verbose: Bool = false
-    ) throws(Error) {
-        guard !apiKey.isEmpty,
-        let authHeaderData = "dev:\(apiKey)".data(using: .utf8) else {
-            throw .invalidApiKey
+    ) throws {
+        guard !apiKey.isEmpty else {
+            throw Error.invalidApiKey
         }
+        
+        let authHeaderData = Data("dev:\(apiKey)".utf8)
         self.authHeader = authHeaderData.base64EncodedString()
         self.verbose = verbose
 

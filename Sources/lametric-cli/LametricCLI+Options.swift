@@ -2,6 +2,8 @@ import ArgumentParser
 import Foundation
 import Lametric
 
+// swiftlint:disable identifier_name
+
 extension LametricCLI {
     struct Options: ParsableArguments {
         @Option(
@@ -100,6 +102,7 @@ extension LametricCLI {
             }
 
             if localDeviceName != nil, scheme == .https {
+                // swiftlint:disable:next line_length
                 throw ValidationError("Scheme should be http when connecting to a local device using --local-device-name (-n) (or LAMETRIC_DEVICE_NAME environment variable).")
             }
 
@@ -108,6 +111,7 @@ extension LametricCLI {
             }
 
             guard apiKey != nil else {
+                // swiftlint:disable:next line_length
                 throw ValidationError("Please specify an API key using --api-key (-k) or set the LAMETRIC_API_KEY environment variable.")
             }
         }
@@ -134,3 +138,5 @@ extension LametricCLI.Options {
 }
 
 extension LametricClient.Scheme: ExpressibleByArgument {}
+
+// swiftlint:enable identifier_name

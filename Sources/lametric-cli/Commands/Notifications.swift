@@ -57,7 +57,7 @@ extension NotificationsCommand {
                 model: Model(frames: [frame], cycles: cycles),
                 priority: priority,
                 iconType: iconType,
-                lifetime: nil,
+                lifetime: nil
             )
 
             let response = try await client.notifications.send(notification)

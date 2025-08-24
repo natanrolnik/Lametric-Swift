@@ -37,18 +37,18 @@ public struct Screensaver: Codable, Sendable {
     public struct Mode: Codable, Sendable {
         public let timeBased: TimeBased
         public let whenDark: WhenDark
+    }
 
-        public struct TimeBased: Codable, Sendable {
-            public let enabled: Bool
-            public let startTime: String
-            public let endTime: String
-            public let localStartTime: String?
-            public let localEndTime: String?
-        }
+    public struct TimeBased: Codable, Sendable {
+        public let enabled: Bool
+        public let startTime: String
+        public let endTime: String
+        public let localStartTime: String?
+        public let localEndTime: String?
+    }
 
-        public struct WhenDark: Codable, Sendable {
-            public let enabled: Bool
-        }
+    public struct WhenDark: Codable, Sendable {
+        public let enabled: Bool
     }
 }
 

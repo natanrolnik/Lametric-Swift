@@ -10,7 +10,9 @@ public extension LametricClient {
 
         /// Sends a notification to the device
         @discardableResult
-        public func send(_ notification: LametricFoundation.Notification) async throws -> Response<NotificationSuccessResponse> {
+        public func send(
+            _ notification: LametricFoundation.Notification
+        ) async throws -> Response<NotificationSuccessResponse> {
             try await executor.executeRequest(for: Endpoints.Notifications.send(notification))
         }
 

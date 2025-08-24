@@ -1,2 +1,5 @@
 excluded:
   - .build
+
+opt_in_rules:
+  multiline_arguments
