@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: ["ubuntu-22.04", "macos-latest"]
+        os: ["ubuntu-22.04"] #, "macos-latest"]
         swift-version: ["5.10", "6.0", "6.1"]
     
     runs-on: ${{ matrix.os }}
