@@ -1,4 +1,4 @@
-// swift-tools-version: 6.1
+// swift-tools-version: 5.10
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -40,6 +40,6 @@ let package = Package(
                 .product(name: "PrettyPrint", package: "swift-pretty-print"),
                 .product(name: "ColorizeSwift", package: "colorizeswift")
             ]
-        ),
+        )
     ]
 )

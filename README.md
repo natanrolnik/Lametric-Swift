@@ -7,7 +7,6 @@
 </p>
   
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fnatanrolnik%2FLametric-Swift%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/natanrolnik/Lametric-Swift)
-
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fnatanrolnik%2FLametric-Swift%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/natanrolnik/Lametric-Swift)
 
 > [!NOTE]
@@ -285,7 +284,7 @@ Browse icons and animations at: [LaMetric Icon Gallery](https://developer.lametr
 
 ## Requirements
 
-- Swift 6.1+
+- Swift 5.10+
 - CLI: macOS or Linux
 
 ## Contributing
