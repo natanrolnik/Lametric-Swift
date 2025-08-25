@@ -43,6 +43,13 @@ internal struct URLSessionExecutor: HTTPExecutor {
                 throw Error.invalidResponse
             }
 
+            if verbose,
+               let jsonResponse = try? JSONSerialization.jsonObject(with: data),
+               let prettyJson = try? JSONSerialization.data(withJSONObject: jsonResponse, options: .prettyPrinted),
+               let prettyString = String(data: prettyJson, encoding: .utf8) {
+                print("Status: \(httpResponse.statusCode)", prettyString, separator: "\n", terminator: "\n\n")
+            }
+
             return try Response(data, statusCode: httpResponse.statusCode)
         } catch let error as URLError where error.code == .timedOut {
             throw Error.timeout

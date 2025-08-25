@@ -125,13 +125,7 @@ extension AppsCommand {
 
         func run() async throws {
             let client = try options.makeClient()
-            let response = try await client.apps.switchToNext()
-
-            if options.verbose {
-                print("Switch to next response:".bold())
-                prettyPrint(try response.required, includeTypeName: false)
-                print()
-            }
+            try await client.apps.switchToNext()
 
             print("Switched to next app".foregroundColor(.green))
         }
@@ -150,13 +144,7 @@ extension AppsCommand {
 
         func run() async throws {
             let client = try options.makeClient()
-            let response = try await client.apps.switchToPrevious()
-
-            if options.verbose {
-                print("Switch to previous response:".bold())
-                prettyPrint(try response.required, includeTypeName: false)
-                print()
-            }
+            try await client.apps.switchToPrevious()
 
             print("Switched to previous app".foregroundColor(.green))
         }
@@ -181,16 +169,10 @@ extension AppsCommand {
 
         func run() async throws {
             let client = try options.makeClient()
-            let response = try await client.apps.activateWidget(
+            try await client.apps.activateWidget(
                 package: package,
                 widgetId: widgetId
             )
-
-            if options.verbose {
-                print("Activate \(widgetId) (\(package)):".bold())
-                prettyPrint(try response.required, includeTypeName: false)
-                print()
-            }
 
             print("Activated widget \(widgetId) in \(package)".foregroundColor(.green))
         }
@@ -253,17 +235,11 @@ extension AppsCommand {
                 activate: activate ? true : nil
             )
 
-            let response = try await client.apps.sendAction(
+            try await client.apps.sendAction(
                 package: package,
                 widgetId: widgetId,
                 action: action
             )
-
-            if options.verbose {
-                print("Action \(action) sent to \(package):".bold())
-                prettyPrint(try response.required, includeTypeName: false)
-                print()
-            }
 
             print("Action '\(actionId)' sent to \(package)".foregroundColor(.green))
         }

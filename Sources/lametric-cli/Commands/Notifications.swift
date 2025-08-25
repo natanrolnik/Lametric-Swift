@@ -62,12 +62,6 @@ extension NotificationsCommand {
 
             let response = try await client.notifications.send(notification)
 
-            if options.verbose {
-                print("Sent notification:".bold())
-                prettyPrint(try response.required)
-                print()
-            }
-
             let id = try response.required.success.id
             print("Notification sent successfully. Id: \(id)".foregroundColor(.green))
         }

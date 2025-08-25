@@ -57,12 +57,7 @@ extension DeviceCommand {
             let client = try options.makeClient()
             let response = try await client.device.setMode(mode)
 
-            if options.verbose {
-                print("Set mode response:".bold())
-                prettyPrint(try response.required, includeTypeName: false)
-                print()
-            }
-
+            let mode = try response.required.success.data.mode
             print("Device mode set to '\(mode.rawValue)' successfully".foregroundColor(.green))
         }
     }

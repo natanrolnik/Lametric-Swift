@@ -44,6 +44,14 @@ internal struct AsyncHTTPClientExecutor: HTTPExecutor {
             let response = try await HTTPClient.shared.execute(request, timeout: .seconds(5))
             let body = try await response.body.collect(upTo: .max)
             let data = Data(buffer: body)
+
+            if verbose,
+               let jsonResponse = try? JSONSerialization.jsonObject(with: data),
+               let prettyJson = try? JSONSerialization.data(withJSONObject: jsonResponse, options: .prettyPrinted),
+               let prettyString = String(data: prettyJson, encoding: .utf8) {
+                print("Status: \(response.status.code) \(response.status.reasonPhrase)", prettyString, separator: "\n", terminator: "\n\n")
+            }
+
             return try Response(data, statusCode: response.status.code)
         } catch let error as HTTPClientError where error == .deadlineExceeded {
             throw Error.timeout
