@@ -1,23 +1,73 @@
 import ArgumentParser
 import ColorizeSwift
 import Lametric
+import LametricFoundation
 import PrettyPrint
 
 struct DeviceCommand: AsyncParsableCommand {
     static var configuration: CommandConfiguration {
         CommandConfiguration(
             commandName: "device",
-            abstract: "Get the device state"
+            abstract: "Manage device settings",
+            subcommands: [
+                InfoCommand.self,
+                SetModeCommand.self
+            ]
         )
     }
+}
 
-    @OptionGroup
-    var options: LametricCLI.Options
+// MARK: - Device Information
 
-    func run() async throws {
-        let client = try options.makeClient()
-        let deviceState = try await client.device.getState().required
-        print("\(deviceState.name) info:".foregroundColor(.green))
-        prettyPrint(deviceState, includeTypeName: false)
+extension DeviceCommand {
+    struct InfoCommand: AsyncParsableCommand {
+        static var configuration: CommandConfiguration {
+            CommandConfiguration(
+                commandName: "info",
+                abstract: "Get the device state"
+            )
+        }
+
+        @OptionGroup
+        var options: LametricCLI.Options
+
+        func run() async throws {
+            let client = try options.makeClient()
+            let deviceState = try await client.device.getState().required
+            print("\(deviceState.name) info:".foregroundColor(.green))
+            prettyPrint(deviceState, includeTypeName: false)
+        }
+    }
+
+    struct SetModeCommand: AsyncParsableCommand {
+        static var configuration: CommandConfiguration {
+            CommandConfiguration(
+                commandName: "set-mode",
+                abstract: "Change the device mode"
+            )
+        }
+
+        @OptionGroup
+        var options: LametricCLI.Options
+
+        @Argument(help: "The device mode to set")
+        var mode: DeviceState.Mode
+
+        func run() async throws {
+            let client = try options.makeClient()
+            let response = try await client.device.setMode(mode)
+
+            if options.verbose {
+                print("Set mode response:".bold())
+                prettyPrint(try response.required, includeTypeName: false)
+                print()
+            }
+
+            print("Device mode set to '\(mode.rawValue)' successfully".foregroundColor(.green))
+        }
     }
 }
+
+// MARK: - ArgumentParser Extensions
+
+extension DeviceState.Mode: ExpressibleByArgument {}

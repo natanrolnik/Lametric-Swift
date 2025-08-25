@@ -12,5 +12,10 @@ public extension LametricClient {
         public func getState() async throws -> Response<DeviceState> {
             try await executor.executeRequest(for: Endpoints.Device.state)
         }
+        
+        /// Sets the device mode
+        public func setMode(_ mode: DeviceState.Mode) async throws -> Response<SetModeResponse> {
+            try await executor.executeRequest(for: Endpoints.Device.setMode(mode))
+        }
     }
 }
